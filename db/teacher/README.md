@@ -1,20 +1,65 @@
-# Teacher Local Database
+# Teacher Local Database (SQLite)
 
-This database lives on the teacher's device or dashboard.
+This database stores **downloaded class data** for offline teacher usage.
 
-## Tables Included
+Teacher uses the dashboard offline after initial sync.
+
+---
+
+## 📦 Purpose
+
+- Store students in teacher’s class
+- Store mastery summaries
+- Store quiz results
+- Allow offline analytics
+- Teacher never uploads anything (feedback is via email)
+
+---
+
+## 📂 Files
+
+### `schema.sql`
+Core tables:
 - students
 - classes
 - student_class_map
 - mastery_summary
 - quiz_summary
-- teacher_feedback
 
-## Sync System
-- sync_inbox: stores new data downloaded from Supabase
-- sync_outbox: stores teacher feedback waiting to sync
+### `sync_schema.sql`
+Download-only inbox (`sync_inbox`).
 
-## Workflow
-1. Download class-wide data from Supabase.
-2. Teacher can work offline (full class analytics).
-3. When online → teacher_feedback is synced back to Supabase.
+### `auth_schema.sql`
+Stores teacher login token.
+
+### `seed.sql`
+Optional dummy data.
+
+---
+
+## 🔁 Sync Flow
+
+1. Teacher logs in (online required)  
+2. Dashboard pulls:
+   - students  
+   - class mapping  
+   - quiz events  
+   - mastery snapshots  
+
+3. Data stored locally in Teacher DB  
+4. Teacher can now work offline  
+5. Feedback is sent via email (not DB)
+
+---
+
+## 🗂 Table Summary
+
+| Table | Purpose |
+|--------|----------|
+| students | Students under teacher |
+| classes | Teacher’s classes |
+| student_class_map | Student → class assignment |
+| mastery_summary | Downloaded mastery |
+| quiz_summary | Downloaded quiz results |
+| sync_inbox | Download queue |
+| auth_local | Teacher login token |

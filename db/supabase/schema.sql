@@ -1,80 +1,56 @@
--- =============================
--- SUPABASE MASTER DATABASE
--- =============================
+# Supabase Master Database (PostgreSQL)
 
--- Students
-CREATE TABLE IF NOT EXISTS students (
-    id uuid PRIMARY KEY,
-    name text,
-    grade int,
-    created_at timestamptz DEFAULT now()
-);
+Supabase acts as the **central cloud database**.
+Flow: Student uploads → Teacher downloads.
 
--- Teachers
-CREATE TABLE IF NOT EXISTS teachers (
-    id uuid PRIMARY KEY,
-    name text,
-    school text
-);
+Supabase is the single source of truth.
 
--- Class mapping (Teacher -> Classes)
-CREATE TABLE IF NOT EXISTS classes (
-    id uuid PRIMARY KEY,
-    teacher_id uuid REFERENCES teachers(id),
-    class_name text,
-    grade int,
-    section text
-);
+---
 
--- Which student belongs to which class
-CREATE TABLE IF NOT EXISTS student_class_map (
-    id uuid PRIMARY KEY,
-    class_id uuid REFERENCES classes(id),
-    student_id uuid REFERENCES students(id)
-);
+## 📦 Purpose
 
--- Questions asked by student
-CREATE TABLE IF NOT EXISTS question_events (
-    id uuid PRIMARY KEY,
-    student_id uuid REFERENCES students(id),
-    raw_question text,
-    asked_at timestamptz,
-    lang text
-);
+- Store all student uploads
+- Store teacher and class mapping
+- Enable teacher dashboards
+- Manage login & authentication
+- Ensure secure, role-based data access
 
--- Model answers
-CREATE TABLE IF NOT EXISTS answer_events (
-    id uuid PRIMARY KEY,
-    question_id uuid REFERENCES question_events(id),
-    answer_text text,
-    was_helpful boolean,
-    time_taken_ms int
-);
+---
 
--- Mastery snapshots
-CREATE TABLE IF NOT EXISTS mastery_snapshots (
-    id uuid PRIMARY KEY,
-    student_id uuid REFERENCES students(id),
-    chapter_id int,
-    score numeric,
-    last_updated timestamptz
-);
+## 📂 Files
 
--- Quiz metadata
-CREATE TABLE IF NOT EXISTS quiz_events (
-    id uuid PRIMARY KEY,
-    student_id uuid REFERENCES students(id),
-    chapter_id int,
-    score int,
-    taken_at timestamptz
-);
+### `schema.sql`
+Defines:
+- students
+- teachers
+- classes
+- student_class_map
+- question_events
+- answer_events
+- mastery_snapshots
+- quiz_events
 
--- Teacher feedback
-CREATE TABLE IF NOT EXISTS teacher_feedback (
-    id uuid PRIMARY KEY,
-    teacher_id uuid REFERENCES teachers(id),
-    student_id uuid REFERENCES students(id),
-    chapter_id int,
-    feedback text,
-    given_at timestamptz DEFAULT now()
-);
+### `functions.sql`
+Triggers, utilities, auto-timestamps.
+
+### `policies.sql`
+Supabase Row-Level Security (RLS rules):
+- Student can only upload their own data
+- Teacher can only see their own class
+
+---
+
+## 🔁 Data Flow
+
+1. Student uploads → Supabase  
+2. Teacher downloads → Supabase  
+3. Teacher gives feedback via email  
+4. **No reverse sync to student app**
+
+---
+
+## 🛡 Security
+
+RLS must enforce:
+- Students can only read/write their own rows
+- Teachers can only read rows belonging to their class

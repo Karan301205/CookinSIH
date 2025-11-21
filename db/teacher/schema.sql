@@ -1,54 +1,41 @@
--- =============================
--- TEACHER LOCAL DATABASE
--- =============================
-
 PRAGMA foreign_keys = ON;
 
--- All students assigned to teacher
-CREATE TABLE IF NOT EXISTS students (
+-- Students in teacher's class
+CREATE TABLE students (
     id TEXT PRIMARY KEY,
     name TEXT,
     grade INTEGER
 );
 
--- Class mapping for teacher
-CREATE TABLE IF NOT EXISTS classes (
+-- Teacher's classes
+CREATE TABLE classes (
     id TEXT PRIMARY KEY,
     class_name TEXT,
     grade INTEGER,
     section TEXT
 );
 
-CREATE TABLE IF NOT EXISTS student_class_map (
+-- Which student belongs to which class
+CREATE TABLE student_class_map (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     class_id TEXT NOT NULL,
     student_id TEXT NOT NULL
 );
 
--- Mastery summary per student
-CREATE TABLE IF NOT EXISTS mastery_summary (
+-- Mastery summary synced from Supabase
+CREATE TABLE mastery_summary (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    student_id TEXT NOT NULL,
-    chapter_id INTEGER NOT NULL,
+    student_id TEXT,
+    chapter_id INTEGER,
     score REAL,
     last_synced DATETIME
 );
 
--- Quiz results synced from cloud
-CREATE TABLE IF NOT EXISTS quiz_summary (
+-- Quiz summary synced from Supabase
+CREATE TABLE quiz_summary (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     student_id TEXT,
     chapter_id INTEGER,
     score INTEGER,
     taken_at DATETIME
-);
-
--- Teacher feedback to student
-CREATE TABLE IF NOT EXISTS teacher_feedback (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    teacher_id TEXT,
-    student_id TEXT,
-    chapter_id INTEGER,
-    feedback TEXT,
-    given_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );

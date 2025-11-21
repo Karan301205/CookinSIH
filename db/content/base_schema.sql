@@ -1,17 +1,13 @@
--- =============================
--- CONTENT DATABASE (Grade Pack)
--- =============================
-
 PRAGMA foreign_keys = ON;
 
--- Classes: 1–12
-CREATE TABLE IF NOT EXISTS classes (
+-- Classes (1–12)
+CREATE TABLE classes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     class_name TEXT NOT NULL
 );
 
--- Subjects: Math, Science, English, etc.
-CREATE TABLE IF NOT EXISTS subjects (
+-- Subjects under each class
+CREATE TABLE subjects (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     subject_name TEXT NOT NULL,
     class_id INTEGER NOT NULL,
@@ -19,7 +15,7 @@ CREATE TABLE IF NOT EXISTS subjects (
 );
 
 -- Books under each subject
-CREATE TABLE IF NOT EXISTS books (
+CREATE TABLE books (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     book_title TEXT NOT NULL,
     class_id INTEGER NOT NULL,
@@ -30,7 +26,7 @@ CREATE TABLE IF NOT EXISTS books (
 );
 
 -- Chapters inside each book
-CREATE TABLE IF NOT EXISTS chapters (
+CREATE TABLE chapters (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     chapter_number INTEGER NOT NULL,
     chapter_title TEXT NOT NULL,
@@ -38,13 +34,12 @@ CREATE TABLE IF NOT EXISTS chapters (
     FOREIGN KEY (book_id) REFERENCES books(id)
 );
 
--- Page-level or paragraph-level chunks
-CREATE TABLE IF NOT EXISTS pages (
+-- Pages / Paragraph chunks
+CREATE TABLE pages (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     chapter_id INTEGER NOT NULL,
     page_number INTEGER,
-    content TEXT,             -- raw text
-    page_url TEXT,            -- optional image/PDF page
+    content TEXT,         -- extracted text
+    page_url TEXT,        -- optional PDF/image
     FOREIGN KEY (chapter_id) REFERENCES chapters(id)
 );
-

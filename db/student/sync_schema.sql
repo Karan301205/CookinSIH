@@ -1,15 +1,8 @@
--- =============================
--- STUDENT SYNC (OUTBOX)
--- =============================
-
-CREATE TABLE IF NOT EXISTS sync_outbox (
+-- Upload-only sync outbox (Student → Supabase)
+CREATE TABLE sync_outbox (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    table_name TEXT NOT NULL,   -- "questions", "answers", "mastery", "quizzes"
-    row_id INTEGER NOT NULL,    -- PK in corresponding table
-    operation TEXT NOT NULL,    -- insert/update
+    table_name TEXT NOT NULL,      -- questions, answers, quizzes, mastery
+    row_id INTEGER NOT NULL,       -- PK in corresponding table
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    synced INTEGER DEFAULT 0    -- 0 = pending, 1 = synced
+    synced INTEGER DEFAULT 0        -- 0 = pending, 1 = uploaded
 );
-
-CREATE INDEX IF NOT EXISTS idx_sync_outbox_pending
-ON sync_outbox(synced, table_name);

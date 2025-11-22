@@ -7,51 +7,37 @@ This folder contains scripts that automate building, exporting, and syncing all 
 ## 📄 Scripts
 
 ### `init_content_db.py`
+
 Builds the Content DB (Grade Pack).
 
 ### `init_student_db.py`
+
 Creates a fresh Student DB on device.
 
-### `init_teacher_db.py`
-Creates a fresh Teacher DB on device.
+# Tools
 
-### `export_gradepack.py`
-Combines content + embeddings into a final Grade Pack.
+This folder contains a single supported tool for this trimmed repo:
 
-### `sync_to_supabase.py`
-Uploads student activity from `sync_outbox` → Supabase.
+- `sync_pdfs_to_sqlite.py`: Download PDFs from a Supabase storage bucket, extract
+  text, and insert rows into a local SQLite `books` table.
 
-### `sync_from_supabase.py`
-Downloads class data for teachers → `sync_inbox`.
+Usage
 
----
+1. Install dependencies:
 
-## 🧠 Purpose of Tools
+```bash
+pip install -r requirements.txt
+```
 
-- Automate DB creation
-- Package Grade Packs
-- Sync student → Supabase
-- Sync teacher ← Supabase
-- Avoid manual SQL work
+2. Run the sync script (set `SUPABASE_URL` and `SUPABASE_KEY` in environment):
+
+```bash
+export SUPABASE_URL=https://xyz.supabase.co
+export SUPABASE_KEY='your_supabase_key_here'
+export SUPABASE_BUCKET=books
+python db/tools/sync_pdfs_to_sqlite.py
+```
+
+If you want other tools restored, tell me which ones and I will restore them.
+
 - Speed up development
-
----
-
-## 🕒 Typical Workflow
-
-1. Build Content DB  
-2. Generate embeddings  
-3. Export Grade Pack  
-4. Student uses app offline  
-5. Student syncs when online  
-6. Teacher downloads class data  
-7. Teacher works offline  
-8. Teacher gives email feedback  
-
----
-
-## 🛠 Requirements
-- Python 3.x
-- sqlite3
-- sqlite-vec (optional)
-- Supabase Python client

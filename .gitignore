@@ -1,2 +1,14 @@
 db/*.db
 db/backups/*.db
+# Environment files
+.env
+
+# Python virtualenv
+.venv/
+
+# Local SQLite DBs
+db/content/*.sqlite
+
+# Bytecode
+__pycache__/
+.pytest_cache/

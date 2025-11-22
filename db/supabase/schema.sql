@@ -1,56 +1,66 @@
-# Supabase Master Database (PostgreSQL)
+-- Student Accounts
+CREATE TABLE students (
+    id uuid PRIMARY KEY,
+    name text,
+    email text UNIQUE,
+    password_hash text,
+    grade int,
+    created_at timestamptz DEFAULT now()
+);
 
-Supabase acts as the **central cloud database**.
-Flow: Student uploads → Teacher downloads.
+-- Teacher Accounts
+CREATE TABLE teachers (
+    id uuid PRIMARY KEY,
+    name text,
+    email text UNIQUE,
+    password_hash text,
+    school text
+);
 
-Supabase is the single source of truth.
+-- Classes mapped to teachers
+CREATE TABLE classes (
+    id uuid PRIMARY KEY,
+    teacher_id uuid REFERENCES teachers(id),
+    class_name text,
+    grade int,
+    section text
+);
 
----
+-- Map students to classes
+CREATE TABLE student_class_map (
+    id uuid PRIMARY KEY,
+    class_id uuid REFERENCES classes(id),
+    student_id uuid REFERENCES students(id)
+);
 
-## 📦 Purpose
+-- Events synced from student devices
+CREATE TABLE question_events (
+    id uuid PRIMARY KEY,
+    student_id uuid REFERENCES students(id),
+    raw_question text,
+    asked_at timestamptz
+);
 
-- Store all student uploads
-- Store teacher and class mapping
-- Enable teacher dashboards
-- Manage login & authentication
-- Ensure secure, role-based data access
+CREATE TABLE answer_events (
+    id uuid PRIMARY KEY,
+    question_id uuid REFERENCES question_events(id),
+    answer_text text,
+    helpful boolean,
+    time_taken_ms int
+);
 
----
+CREATE TABLE mastery_snapshots (
+    id uuid PRIMARY KEY,
+    student_id uuid REFERENCES students(id),
+    chapter_id int,
+    score numeric,
+    last_updated timestamptz
+);
 
-## 📂 Files
-
-### `schema.sql`
-Defines:
-- students
-- teachers
-- classes
-- student_class_map
-- question_events
-- answer_events
-- mastery_snapshots
-- quiz_events
-
-### `functions.sql`
-Triggers, utilities, auto-timestamps.
-
-### `policies.sql`
-Supabase Row-Level Security (RLS rules):
-- Student can only upload their own data
-- Teacher can only see their own class
-
----
-
-## 🔁 Data Flow
-
-1. Student uploads → Supabase  
-2. Teacher downloads → Supabase  
-3. Teacher gives feedback via email  
-4. **No reverse sync to student app**
-
----
-
-## 🛡 Security
-
-RLS must enforce:
-- Students can only read/write their own rows
-- Teachers can only read rows belonging to their class
+CREATE TABLE quiz_events (
+    id uuid PRIMARY KEY,
+    student_id uuid REFERENCES students(id),
+    chapter_id int,
+    score int,
+    taken_at timestamptz
+);

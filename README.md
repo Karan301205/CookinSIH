@@ -1,33 +1,105 @@
-# CookinSIH — PDF to SQLite sync
+# MyAIApp
 
-This repository has been trimmed to a minimal toolset for importing PDF files
-stored in a Supabase storage bucket into a local SQLite `books` database.
+MyAIApp is the React Native mobile client for the education experience mirrored from the web UI reference. It is bootstrapped with [`@react-native-community/cli`](https://github.com/react-native-community/cli) and focuses on recreating pixel-accurate learning flows with consistent typography, gradients, and motion.
 
-What remains in the repo:
+## Features
+- Complete navigation stack with custom bottom tabs for Home, Subjects, Quiz, Tutor, Progress, and Leaderboard
+- Shared light/dark theming, spacing, and typography tokens via a centralized theme provider
+- Gradient-driven cards, charts rendered with `react-native-svg`, and icons from `lucide-react-native`
+- Quiz engine with play/results screens, tutor chat UI, and progress insights backed by reusable components
 
-- `db/content/sqlite_books_schema.sql` — local SQLite `books` table schema
-- `db/tools/sync_pdfs_to_sqlite.py` — script to download PDFs, extract text, and insert rows into SQLite
-- `requirements.txt` — Python dependencies for the sync script
+## Getting Started
 
-Quick start
+> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
 
-1. Install dependencies:
+### Step 1: Start Metro
 
-```bash
-pip install -r requirements.txt
+First, you will need to run **Metro**, the JavaScript build tool for React Native.
+
+To start the Metro dev server, run the following command from the root of your React Native project:
+
+```sh
+# Using npm
+npm start
+
+# OR using Yarn
+yarn start
 ```
 
-2. Export Supabase credentials and run the sync:
+### Step 2: Build and run your app
 
-```bash
-export SUPABASE_URL=https://xyz.supabase.co
-export SUPABASE_KEY='your_supabase_key_here'
-export SUPABASE_BUCKET=books        # optional, defaults to 'books'
-export SQLITE_DB_PATH=db/content/books.sqlite  # optional
-python db/tools/sync_pdfs_to_sqlite.py
+With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+
+#### Android
+
+```sh
+# Using npm
+npm run android
+
+# OR using Yarn
+yarn android
 ```
 
-Notes
+#### iOS
 
-- The script is idempotent and skips PDFs already imported (uses `pdf_url` as unique key).
-- The repository has been pruned of vector-search and other app-specific artifacts — it's focused only on the PDF→SQLite workflow.
+For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+
+The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+
+```sh
+bundle install
+```
+
+Then, and every time you update your native dependencies, run:
+
+```sh
+bundle exec pod install
+```
+
+For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+
+```sh
+# Using npm
+npm run ios
+
+# OR using Yarn
+yarn ios
+```
+
+If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+
+This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+
+### Step 3: Modify your app
+
+Now that you have successfully run the app, let's make changes!
+
+Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+
+When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+
+- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
+- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+
+## Congratulations! :tada:
+
+You've successfully run and modified your React Native App. :partying_face:
+
+### Now what?
+
+- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
+- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+
+# Troubleshooting
+
+If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+
+# Learn More
+
+To learn more about React Native, take a look at the following resources:
+
+- [React Native Website](https://reactnative.dev) - learn more about React Native.
+- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
+- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
+- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
+- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.

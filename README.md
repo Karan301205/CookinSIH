@@ -8,12 +8,19 @@ MyAIApp is the React Native mobile client for the education experience mirrored 
 - Gradient-driven cards, charts rendered with `react-native-svg`, and icons from `lucide-react-native`
 - Quiz engine with play/results screens, tutor chat UI, and progress insights backed by reusable components
 
-## Getting Started
+## iOS Setup & Run Instructions
 
+Follow the steps below to install dependencies and run the iOS app:
+
+```bash
 cd ios
 npm i pod
 npm i
 npx react-native run-ios
+
+
+## Getting Started
+
 
 > **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
 

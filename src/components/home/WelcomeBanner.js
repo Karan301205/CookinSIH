@@ -12,15 +12,21 @@ export function WelcomeBanner({ name = 'Alex', streak = 12 }) {
       colors={[applyAlpha(colors.primary, 0.2), applyAlpha(colors.secondary, 0.15)]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
-      style={[styles.container, { borderRadius: radii.xl, padding: spacing.xl }]}
+      style={[
+        styles.container,
+        {
+          borderRadius: radii.xl,
+          borderColor: applyAlpha(colors.primary, 0.2),
+          borderWidth: 2,
+        },
+      ]}
     >
       <View
         style={[
           styles.inner,
           {
-            borderColor: applyAlpha(colors.primary, 0.2),
             borderRadius: radii.xl,
-            padding: spacing.lg,
+            padding: spacing.lg, // only this padding is kept
           },
         ]}
       >
@@ -38,6 +44,7 @@ export function WelcomeBanner({ name = 'Alex', streak = 12 }) {
             >
               Welcome back,
             </Text>
+
             <Text
               style={[
                 styles.name,
@@ -51,6 +58,7 @@ export function WelcomeBanner({ name = 'Alex', streak = 12 }) {
               {name}!
             </Text>
           </View>
+
           <View
             style={[
               styles.initialWrapper,
@@ -82,6 +90,7 @@ export function WelcomeBanner({ name = 'Alex', streak = 12 }) {
             </View>
           </View>
         </View>
+
         <Text
           style={[
             styles.subtitle,
@@ -101,7 +110,7 @@ export function WelcomeBanner({ name = 'Alex', streak = 12 }) {
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 2,
+    overflow: 'hidden',
   },
   inner: {
     backgroundColor: 'transparent',

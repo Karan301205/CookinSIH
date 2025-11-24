@@ -54,6 +54,7 @@ export function FeaturedTopics({ onSelect }) {
       >
         Featured Topics
       </Text>
+
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: spacing.md }}
@@ -64,85 +65,113 @@ export function FeaturedTopics({ onSelect }) {
           const isLast = index === TOPICS.length - 1;
 
           return (
-            <Pressable key={topic.id} onPress={() => onSelect?.(topic)} style={({ pressed }) => ({ opacity: pressed ? 0.85 : 1 })}>
-              <LinearGradient
-                colors={[applyAlpha(accent, 0.18), applyAlpha(accent, 0.05)]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
+            <Pressable
+              key={topic.id}
+              onPress={() => onSelect?.(topic)}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.85 : 1,
+              })}
+            >
+              <View
                 style={[
-                  styles.card,
+                  styles.cardOuter,
                   {
                     borderRadius: radii.xl,
-                    borderColor: colors.border,
                     borderWidth: 1,
+                    borderColor: colors.border,
                     marginBottom: isLast ? 0 : spacing.md,
+                    overflow: 'hidden', // important (removes the gap)
                   },
                 ]}
               >
-                <View style={styles.row}>
-                  <View style={{ flex: 1, marginRight: spacing.md }}>
-                    <View style={styles.subjectRow}>
-                      <Text
-                        style={{
-                          fontFamily: typography.family,
-                          fontWeight: typography.weightMedium,
-                          fontSize: 11,
-                          textTransform: 'uppercase',
-                          letterSpacing: 1.1,
-                          color: colors.mutedForeground,
-                        }}
-                      >
-                        {topic.subject}
-                      </Text>
-                      <View
-                        style={{
-                          backgroundColor: accent,
-                          borderRadius: radii.sm,
-                          paddingHorizontal: 8,
-                          paddingVertical: 4,
-                          marginLeft: 8,
-                        }}
-                      >
+                <LinearGradient
+                  colors={[
+                    applyAlpha(accent, 0.18),
+                    applyAlpha(accent, 0.05),
+                  ]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={[
+                    styles.cardInner,
+                    {
+                      borderRadius: radii.xl,
+                      padding: spacing.lg, // only inner padding stays
+                    },
+                  ]}
+                >
+                  <View style={styles.row}>
+                    <View style={{ flex: 1, marginRight: spacing.md }}>
+                      <View style={styles.subjectRow}>
                         <Text
                           style={{
                             fontFamily: typography.family,
-                            fontWeight: typography.weightBold,
+                            fontWeight: typography.weightMedium,
                             fontSize: 11,
-                            color: accentBadge,
+                            textTransform: 'uppercase',
+                            letterSpacing: 1.1,
+                            color: colors.mutedForeground,
                           }}
                         >
-                          {topic.progress}%
+                          {topic.subject}
                         </Text>
+
+                        <View
+                          style={{
+                            backgroundColor: accent,
+                            borderRadius: radii.sm,
+                            paddingHorizontal: 8,
+                            paddingVertical: 4,
+                            marginLeft: 8,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontFamily: typography.family,
+                              fontWeight: typography.weightBold,
+                              fontSize: 11,
+                              color: accentBadge,
+                            }}
+                          >
+                            {topic.progress}%
+                          </Text>
+                        </View>
+                      </View>
+
+                      <Text
+                        style={{
+                          marginTop: spacing.xs,
+                          fontFamily: typography.family,
+                          fontWeight: typography.weightBold,
+                          fontSize: 16,
+                          color: colors.foreground,
+                        }}
+                      >
+                        {topic.title}
+                      </Text>
+
+                      <View
+                        style={[
+                          styles.progressTrack,
+                          { backgroundColor: colors.border },
+                        ]}
+                      >
+                        <View
+                          style={{
+                            width: `${topic.progress}%`,
+                            backgroundColor: accent,
+                            borderRadius: radii.full,
+                            height: 6,
+                          }}
+                        />
                       </View>
                     </View>
-                    <Text
-                      style={{
-                        marginTop: spacing.xs,
-                        fontFamily: typography.family,
-                        fontWeight: typography.weightBold,
-                        fontSize: 16,
-                        color: colors.foreground,
-                      }}
-                    >
-                      {topic.title}
-                    </Text>
-                    <View style={[styles.progressTrack, { backgroundColor: colors.border }]}
-                    >
-                      <View
-                        style={{
-                          width: `${topic.progress}%`,
-                          backgroundColor: accent,
-                          borderRadius: radii.full,
-                          height: 6,
-                        }}
-                      />
+
+                    <View style={{ marginTop: 4 }}>
+                      <ChevronRight size={24} color={colors.mutedForeground} />
                     </View>
                   </View>
-                  <View style={{ marginTop: 4 }}>
-                    <ChevronRight size={24} color={colors.mutedForeground} />
-                  </View>
-                </View>
-              </LinearGradient>
+                </LinearGradient>
+              </View>
             </Pressable>
           );
         })}
@@ -152,8 +181,11 @@ export function FeaturedTopics({ onSelect }) {
 }
 
 const styles = StyleSheet.create({
-  card: {
-    padding: 20,
+  cardOuter: {
+    // no padding here (prevents the double-gap)
+  },
+  cardInner: {
+    width: '100%',
   },
   row: {
     flexDirection: 'row',

@@ -37,23 +37,28 @@ export function QuickActions({ onSelect }) {
       >
         Quick Access
       </Text>
+
       <View style={styles.grid}>
         {ACTIONS.map((action) => {
           const Icon = action.icon;
           const accentKey = actionToColorKey[action.key] ?? 'primary';
           const accentColor = colors[accentKey] ?? colors.primary;
-          const gradientColors = [applyAlpha(accentColor, 0.12), applyAlpha(accentColor, 0.02)];
+          const gradientColors = [
+            applyAlpha(accentColor, 0.12),
+            applyAlpha(accentColor, 0.02),
+          ];
 
           return (
             <Pressable
               key={action.key}
               onPress={() => onSelect?.(action.key)}
-              style={({ pressed }) => [
+              style={[
                 styles.card,
                 {
                   borderRadius: radii.xl,
-                  borderColor: applyAlpha(accentColor, 0.2),
                   borderWidth: 2,
+                  borderColor: applyAlpha(accentColor, 0.2),
+                  overflow: 'hidden', // important to avoid gaps
                 },
               ]}
             >
@@ -61,7 +66,11 @@ export function QuickActions({ onSelect }) {
                 colors={gradientColors}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
-                style={[styles.gradient, { borderRadius: radii.xl, padding: spacing.lg }]}
+                style={{
+                  flex: 1,
+                  borderRadius: radii.xl,
+                  padding: spacing.lg, // only inner padding
+                }}
               >
                 <View
                   style={{
@@ -75,6 +84,7 @@ export function QuickActions({ onSelect }) {
                 >
                   <Icon size={20} color="#FFFFFF" />
                 </View>
+
                 <Text
                   style={{
                     fontFamily: typography.family,
@@ -104,8 +114,5 @@ const styles = StyleSheet.create({
   card: {
     width: '48%',
     marginBottom: 12,
-  },
-  gradient: {
-    width: '100%',
   },
 });

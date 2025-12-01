@@ -2,3 +2,9 @@ supabase-py>=1.0.0
 pdfplumber>=0.7.0
 requests>=2.0.0
 python-dotenv>=1.0.0
+supabase==1.0.0
+PyMuPDF==1.22.5
+tqdm==4.65.0
+# Load .env automatically
+python-dotenv==1.0.0
+# sqlite3 is part of Python standard library
